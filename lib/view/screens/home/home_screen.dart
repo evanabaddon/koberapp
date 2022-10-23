@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_restaurant/helper/product_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -23,13 +22,10 @@ import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/title_widget.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/category_web_view.dart';
-import 'package:flutter_restaurant/view/screens/home/web/widget/set_menu_view_web.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/banner_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/profileview.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/set_menu_view.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
@@ -233,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(Icons.whatsapp),
                   label: const Text("CS KOBER"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorResources.APPBAR_HEADER_COL0R,
+                    primary: ColorResources.APPBAR_HEADER_COL0R,
                   ),
                   onPressed: openLink,
                 );
