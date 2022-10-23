@@ -49,6 +49,7 @@ class Images {
   static const String order_animation = 'assets/json/order_animation.json';
 
   // for Icon
+  static const String splashlogo = 'assets/image/splash_logo.png';
   static const String logo = 'assets/image/logo.png';
   static const String marker = 'assets/icon/marker.png';
   static const String my_location = 'assets/icon/my_location.png';

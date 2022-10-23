@@ -10,6 +10,7 @@ import 'package:flutter_restaurant/provider/onboarding_provider.dart';
 import 'package:flutter_restaurant/provider/splash_provider.dart';
 import 'package:flutter_restaurant/provider/wishlist_provider.dart';
 import 'package:flutter_restaurant/utill/app_constants.dart';
+import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
@@ -144,7 +145,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
-      backgroundColor: Colors.white,
+      backgroundColor: ColorResources.APPBAR_HEADER_COL0R,
       body: Center(
         child: Consumer<SplashProvider>(builder: (context, splash, child) {
           return Column(
@@ -161,7 +162,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           Images.placeholder_rectangle,
                           height: 165),
                     )
-                  : Image.asset(Images.logo, height: 150),
+                  : Image.asset(Images.splashlogo, height: 300),
               SizedBox(height: 30),
               // Text(
               //   ResponsiveHelper.isWeb() ? splash.configModel.restaurantName : AppConstants.APP_NAME,

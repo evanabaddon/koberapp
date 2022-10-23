@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_restaurant/helper/product_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
@@ -31,6 +32,7 @@ import 'package:flutter_restaurant/view/screens/home/widget/profileview.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/set_menu_view.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/link.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool fromAppBar;
@@ -43,6 +45,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> drawerGlobalKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
+  bool showFAB = true;
 
   Future<void> _loadData(BuildContext context, bool reload) async {
     if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
@@ -113,6 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<CategoryProvider>(context, listen: false).categoryList ==
             null) {
       _loadData(context, false);
+    }
+    if (_scrollController.keepScrollOffset == true) {
+      showFAB = false;
     }
     super.initState();
   }
@@ -217,6 +223,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
         ),
       ),
+      floatingActionButton: showFAB
+          ? Link(
+              uri: Uri.parse(
+                  'https://api.whatsapp.com/send?phone=628113716668&text=Hallo%20kak%20Saya%20mau%20menghubungi%20CS%20Kober%20Mie%20Setan.%20Terimakasih'),
+              target: LinkTarget.blank,
+              builder: (BuildContext ctx, FollowLink openLink) {
+                return ElevatedButton.icon(
+                  icon: const Icon(Icons.whatsapp),
+                  label: const Text("CS KOBER"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ColorResources.APPBAR_HEADER_COL0R,
+                  ),
+                  onPressed: openLink,
+                );
+              },
+            )
+          : null,
     );
   }
 
@@ -224,222 +247,230 @@ class _HomeScreenState extends State<HomeScreen> {
       ScrollController _scrollController, BuildContext context) {
     return Scrollbar(
       controller: _scrollController,
-      child: CustomScrollView(controller: _scrollController, slivers: [
-        // AppBar
-        ResponsiveHelper.isDesktop(context)
-            ? SliverToBoxAdapter(child: SizedBox())
-            : SliverAppBar(
-                floating: true,
-                elevation: 0,
-                centerTitle: false,
-                automaticallyImplyLeading: false,
-                backgroundColor: Theme.of(context).cardColor,
-                pinned: ResponsiveHelper.isTab(context) ? true : false,
-                leading: ResponsiveHelper.isTab(context)
-                    ? IconButton(
-                        onPressed: () =>
-                            drawerGlobalKey.currentState.openDrawer(),
-                        icon: Icon(Icons.menu, color: Colors.black),
-                      )
-                    : null,
-                title: Consumer<SplashProvider>(
-                    builder: (context, splash, child) => Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            ResponsiveHelper.isWeb()
-                                ? FadeInImage.assetNetwork(
-                                    placeholder: Images.placeholder_rectangle,
-                                    height: 40,
-                                    width: 40,
-                                    image: splash.baseUrls != null
-                                        ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}'
-                                        : '',
-                                    imageErrorBuilder: (c, o, s) => Image.asset(
-                                        Images.placeholder_rectangle,
-                                        height: 40,
-                                        width: 40),
-                                  )
-                                : Image.asset(Images.logo,
-                                    width: 40, height: 40),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                ResponsiveHelper.isWeb()
-                                    ? splash.configModel.restaurantName
-                                    : AppConstants.APP_NAME,
-                                style: rubikBold.copyWith(
-                                    color: Theme.of(context).primaryColor),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        )),
-                actions: [
-                  IconButton(
-                    onPressed: () => Navigator.pushNamed(
-                        context, Routes.getNotificationRoute()),
-                    icon: Icon(Icons.notifications,
-                        color: Theme.of(context).textTheme.bodyText1.color),
-                  ),
-                  ResponsiveHelper.isTab(context)
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          // AppBar
+          ResponsiveHelper.isDesktop(context)
+              ? SliverToBoxAdapter(child: SizedBox())
+              : SliverAppBar(
+                  floating: true,
+                  elevation: 0,
+                  centerTitle: false,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Theme.of(context).cardColor,
+                  pinned: ResponsiveHelper.isTab(context) ? true : false,
+                  leading: ResponsiveHelper.isTab(context)
                       ? IconButton(
-                          onPressed: () => Navigator.pushNamed(
-                              context, Routes.getDashboardRoute('cart')),
-                          icon: Stack(
-                            clipBehavior: Clip.none,
+                          onPressed: () =>
+                              drawerGlobalKey.currentState.openDrawer(),
+                          icon: Icon(Icons.menu, color: Colors.black),
+                        )
+                      : null,
+                  title: Consumer<SplashProvider>(
+                      builder: (context, splash, child) => Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.shopping_cart,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1
-                                      .color),
-                              Positioned(
-                                top: -10,
-                                right: -10,
-                                child: Container(
-                                  padding: EdgeInsets.all(4),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.red),
-                                  child: Center(
-                                    child: Text(
-                                      Provider.of<CartProvider>(context)
-                                          .cartList
-                                          .length
-                                          .toString(),
-                                      style: rubikMedium.copyWith(
-                                          color: Colors.white, fontSize: 8),
-                                    ),
-                                  ),
+                              ResponsiveHelper.isWeb()
+                                  ? FadeInImage.assetNetwork(
+                                      placeholder: Images.placeholder_rectangle,
+                                      height: 40,
+                                      width: 40,
+                                      image: splash.baseUrls != null
+                                          ? '${splash.baseUrls.restaurantImageUrl}/${splash.configModel.restaurantLogo}'
+                                          : '',
+                                      imageErrorBuilder: (c, o, s) =>
+                                          Image.asset(
+                                              Images.placeholder_rectangle,
+                                              height: 40,
+                                              width: 40),
+                                    )
+                                  : Image.asset(Images.logo,
+                                      width: 40, height: 40),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  ResponsiveHelper.isWeb()
+                                      ? splash.configModel.restaurantName
+                                      : AppConstants.APP_NAME,
+                                  style: rubikBold.copyWith(
+                                      color: Theme.of(context).primaryColor),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
-                          ),
-                        )
-                      : SizedBox(),
-                ],
-              ),
+                          )),
+                  actions: [
+                    IconButton(
+                      onPressed: () => Navigator.pushNamed(
+                          context, Routes.getNotificationRoute()),
+                      icon: Icon(Icons.notifications,
+                          color: Theme.of(context).textTheme.bodyText1.color),
+                    ),
+                    ResponsiveHelper.isTab(context)
+                        ? IconButton(
+                            onPressed: () => Navigator.pushNamed(
+                                context, Routes.getDashboardRoute('cart')),
+                            icon: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Icon(Icons.shopping_cart,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1
+                                        .color),
+                                Positioned(
+                                  top: -10,
+                                  right: -10,
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red),
+                                    child: Center(
+                                      child: Text(
+                                        Provider.of<CartProvider>(context)
+                                            .cartList
+                                            .length
+                                            .toString(),
+                                        style: rubikMedium.copyWith(
+                                            color: Colors.white, fontSize: 8),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(),
+                  ],
+                ),
 
-        // Search Button
-        if (!ResponsiveHelper.isWeb())
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: SliverDelegate(
-                child: Center(
-              child: InkWell(
-                onTap: () =>
-                    Navigator.pushNamed(context, Routes.getSearchRoute()),
-                child: Container(
-                  height: 60,
-                  width: 1170,
-                  color: Theme.of(context).cardColor,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Dimensions.PADDING_SIZE_SMALL, vertical: 5),
+          // Search Button
+          if (!ResponsiveHelper.isWeb())
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: SliverDelegate(
+                  child: Center(
+                child: InkWell(
+                  onTap: () =>
+                      Navigator.pushNamed(context, Routes.getSearchRoute()),
                   child: Container(
-                    decoration: BoxDecoration(
-                        color: ColorResources.getSearchBg(context),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(children: [
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: Dimensions.PADDING_SIZE_SMALL),
-                          child: Icon(Icons.search, size: 25)),
-                      Expanded(
-                          child: Text(
-                              getTranslated('search_items_here', context),
-                              style: rubikRegular.copyWith(fontSize: 12))),
-                    ]),
+                    height: 60,
+                    width: 1170,
+                    color: Theme.of(context).cardColor,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Dimensions.PADDING_SIZE_SMALL, vertical: 5),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: ColorResources.getSearchBg(context),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Row(children: [
+                        Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Dimensions.PADDING_SIZE_SMALL),
+                            child: Icon(Icons.search, size: 25)),
+                        Expanded(
+                            child: Text(
+                                getTranslated('search_items_here', context),
+                                style: rubikRegular.copyWith(fontSize: 12))),
+                      ]),
+                    ),
                   ),
                 ),
-              ),
-            )),
-          ),
+              )),
+            ),
 
-        SliverToBoxAdapter(
-          child: Center(
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 1170,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ResponsiveHelper.isDesktop(context)
-                            ? Padding(
-                                padding: EdgeInsets.only(
-                                    top: Dimensions.PADDING_SIZE_DEFAULT),
-                                child: MainSlider(),
-                              )
-                            : SizedBox(),
-                        ResponsiveHelper.isDesktop(context)
-                            ? SizedBox()
-                            : BannerView(),
-                        ResponsiveHelper.isDesktop(context)
-                            ? CategoryViewWeb()
-                            : CategoryView(),
-                        ResponsiveHelper.isDesktop(context)
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                    child: Text(
-                                        getTranslated('popular_item', context),
-                                        style: rubikRegular.copyWith(
-                                            fontSize: Dimensions
-                                                .FONT_SIZE_OVER_LARGE)),
-                                  ),
-                                ],
-                              )
-                            : Padding(
-                                padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: TitleWidget(
-                                  title: getTranslated('popular_item', context),
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.getPopularItemScreen());
-                                  },
-                                ),
-                              ),
-                        ProductView(
-                          productType: ProductType.POPULAR_PRODUCT,
-                        ),
-                        ResponsiveHelper.isDesktop(context)
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                    child: Text(
-                                        getTranslated('latest_item', context),
-                                        style: rubikRegular.copyWith(
-                                            fontSize: Dimensions
-                                                .FONT_SIZE_OVER_LARGE)),
-                                  ),
-                                ],
-                              )
-                            : Padding(
-                                padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: TitleWidget(
+          SliverToBoxAdapter(
+            child: Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 1170,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ResponsiveHelper.isDesktop(context)
+                              ? Padding(
+                                  padding: EdgeInsets.only(
+                                      top: Dimensions.PADDING_SIZE_DEFAULT),
+                                  child: MainSlider(),
+                                )
+                              : SizedBox(),
+                          ResponsiveHelper.isDesktop(context)
+                              ? SizedBox()
+                              : BannerView(),
+                          ResponsiveHelper.isDesktop(context)
+                              ? CategoryViewWeb()
+                              : CategoryView(),
+                          ResponsiveHelper.isDesktop(context)
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                      child: Text(
+                                          getTranslated(
+                                              'popular_item', context),
+                                          style: rubikRegular.copyWith(
+                                              fontSize: Dimensions
+                                                  .FONT_SIZE_OVER_LARGE)),
+                                    ),
+                                  ],
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  child: TitleWidget(
                                     title:
-                                        getTranslated('latest_item', context)),
-                              ),
-                        ProductView(
-                            productType: ProductType.LATEST_PRODUCT,
-                            scrollController: _scrollController),
-                      ]),
-                ),
-                if (ResponsiveHelper.isDesktop(context)) FooterView(),
-              ],
+                                        getTranslated('popular_item', context),
+                                    onTap: () {
+                                      Navigator.pushNamed(context,
+                                          Routes.getPopularItemScreen());
+                                    },
+                                  ),
+                                ),
+                          ProductView(
+                            productType: ProductType.POPULAR_PRODUCT,
+                          ),
+                          ResponsiveHelper.isDesktop(context)
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
+                                      child: Text(
+                                          getTranslated('latest_item', context),
+                                          style: rubikRegular.copyWith(
+                                              fontSize: Dimensions
+                                                  .FONT_SIZE_OVER_LARGE)),
+                                    ),
+                                  ],
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  child: TitleWidget(
+                                      title: getTranslated(
+                                          'latest_item', context)),
+                                ),
+                          ProductView(
+                              productType: ProductType.LATEST_PRODUCT,
+                              scrollController: _scrollController),
+                        ]),
+                  ),
+                  if (ResponsiveHelper.isDesktop(context)) FooterView(),
+                ],
+              ),
             ),
           ),
-        ),
-        //  if(ResponsiveHelper.isDesktop(context)) FooterView(),
-      ]),
+          //  if(ResponsiveHelper.isDesktop(context)) FooterView(),
+        ],
+      ),
     );
   }
 }
