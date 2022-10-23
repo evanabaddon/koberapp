@@ -1,0 +1,23 @@
+{
+    "name": "Kober App",
+    "short_name": "Kober App",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ed3237",
+    "theme_color": "#ed3237",
+    "description": "A new Flutter project.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/logo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
