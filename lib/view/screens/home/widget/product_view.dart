@@ -179,7 +179,7 @@ class ProductView extends StatelessWidget {
                                         width: 500,
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor:
+                                            primary:
                                                 Theme.of(context).primaryColor,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:

@@ -241,7 +241,7 @@ class ProductWidgetWeb extends StatelessWidget {
                                   child: FittedBox(
                                       child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                              backgroundColor: ColorResources
+                                              primary: ColorResources
                                                   .APPBAR_HEADER_COL0R,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:

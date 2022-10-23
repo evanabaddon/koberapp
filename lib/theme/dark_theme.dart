@@ -11,7 +11,7 @@ ThemeData dark = ThemeData(
   focusColor: Color(0xFFADC4C8),
   textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-    foregroundColor: Colors.white,
+    primary: Colors.white,
     textStyle: TextStyle(color: Colors.white),
   )),
   pageTransitionsTheme: PageTransitionsTheme(builders: {

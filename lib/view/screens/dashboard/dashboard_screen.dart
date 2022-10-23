@@ -95,7 +95,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: const Icon(Icons.whatsapp),
               label: const Text("CS KOBER"),
               style: ElevatedButton.styleFrom(
-                backgroundColor: ColorResources.APPBAR_HEADER_COL0R,
+                primary: ColorResources.APPBAR_HEADER_COL0R,
               ),
               onPressed: openLink,
             );
