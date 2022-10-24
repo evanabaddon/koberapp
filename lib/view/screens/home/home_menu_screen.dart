@@ -440,7 +440,7 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> {
                                   ],
                                 )
                               : Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
                                   child: TitleWidget(
                                       title: getTranslated(
                                           'latest_item', context)),

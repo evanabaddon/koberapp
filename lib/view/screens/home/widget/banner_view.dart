@@ -26,7 +26,7 @@ class BannerView extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 300,
+          height: 285,
           child: Consumer<BannerProvider>(
             builder: (context, banner, child) {
               return banner.bannerList != null

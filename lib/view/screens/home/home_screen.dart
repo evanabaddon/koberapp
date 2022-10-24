@@ -27,7 +27,6 @@ import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/link.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool fromAppBar;
@@ -215,21 +214,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
         ),
       ),
-      floatingActionButton: Link(
-        uri: Uri.parse(
-            'https://api.whatsapp.com/send?phone=628113716668&text=Hallo%20kak%20Saya%20mau%20menghubungi%20CS%20Kober%20Mie%20Setan.%20Terimakasih'),
-        target: LinkTarget.blank,
-        builder: (BuildContext ctx, FollowLink openLink) {
-          return ElevatedButton.icon(
-            icon: const Icon(Icons.whatsapp),
-            label: const Text("CS KOBER"),
-            style: ElevatedButton.styleFrom(
-              primary: ColorResources.APPBAR_HEADER_COL0R,
-            ),
-            onPressed: openLink,
-          );
-        },
-      ),
+      // floatingActionButton: Link(
+      //   uri: Uri.parse(
+      //       'https://api.whatsapp.com/send?phone=628113716668&text=Hallo%20kak%20Saya%20mau%20menghubungi%20CS%20Kober%20Mie%20Setan.%20Terimakasih'),
+      //   target: LinkTarget.blank,
+      //   builder: (BuildContext ctx, FollowLink openLink) {
+      //     return ElevatedButton.icon(
+      //       icon: const Icon(Icons.whatsapp),
+      //       label: const Text("CS KOBER"),
+      //       style: ElevatedButton.styleFrom(
+      //         primary: ColorResources.APPBAR_HEADER_COL0R,
+      //       ),
+      //       onPressed: openLink,
+      //     );
+      //   },
+      // ),
     );
   }
 

@@ -29,7 +29,7 @@ class CategoryView extends StatelessWidget {
               children: [
                 Expanded(
                   child: SizedBox(
-                    height: 100,
+                    height: 110,
                     child: category.categoryList != null
                         ? category.categoryList.length > 0
                             ? ListView.builder(
@@ -49,7 +49,7 @@ class CategoryView extends StatelessWidget {
                                           category.categoryList[index].name;
                                   return Padding(
                                     padding: EdgeInsets.only(
-                                        right: Dimensions.PADDING_SIZE_SMALL),
+                                        right: Dimensions.PADDING_SIZE_DEFAULT),
                                     child: InkWell(
                                       onTap: () => Navigator.pushNamed(
                                         context,
@@ -61,26 +61,43 @@ class CategoryView extends StatelessWidget {
                                       ), // arguments:  category.categoryList[index].name),
                                       child: Column(children: [
                                         Container(
-                                          child: FadeInImage.assetNetwork(
-                                            placeholder:
-                                                Images.placeholder_image,
-                                            width: 65,
-                                            height: 65,
-                                            fit: BoxFit.cover,
-                                            image: Provider.of<SplashProvider>(
-                                                            context,
-                                                            listen: false)
-                                                        .baseUrls !=
-                                                    null
-                                                ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/${category.categoryList[index].image}'
-                                                : '',
-                                            imageErrorBuilder: (c, o, s) =>
-                                                Image.asset(
-                                                    Images.placeholder_image,
-                                                    width: 65,
-                                                    height: 65,
-                                                    fit: BoxFit.cover),
-                                            // width: 100, height: 100, fit: BoxFit.cover,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(12.0),
+                                            ),
+                                            color: Colors.white,
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                color: Color(0x19000000),
+                                                blurRadius: 4,
+                                                offset: Offset(1, 1),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: FadeInImage.assetNetwork(
+                                              placeholder:
+                                                  Images.placeholder_image,
+                                              width: 65,
+                                              height: 65,
+                                              fit: BoxFit.cover,
+                                              image: Provider.of<SplashProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .baseUrls !=
+                                                      null
+                                                  ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/${category.categoryList[index].image}'
+                                                  : '',
+                                              imageErrorBuilder: (c, o, s) =>
+                                                  Image.asset(
+                                                      Images.placeholder_image,
+                                                      width: 65,
+                                                      height: 65,
+                                                      fit: BoxFit.cover),
+                                              // width: 100, height: 100, fit: BoxFit.cover,
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(

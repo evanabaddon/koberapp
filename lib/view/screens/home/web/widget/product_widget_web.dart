@@ -281,7 +281,7 @@ class ProductWidgetWeb extends StatelessWidget {
                             : Icons.favorite_border,
                         color: wishList.wishIdList.contains(product.id)
                             ? Theme.of(context).primaryColor
-                            : ColorResources.COLOR_WHITE),
+                            : ColorResources.APPBAR_HEADER_COL0R),
                   );
                 }),
               ),
