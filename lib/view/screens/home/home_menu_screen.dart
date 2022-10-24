@@ -22,22 +22,22 @@ import 'package:flutter_restaurant/view/base/footer_view.dart';
 import 'package:flutter_restaurant/view/base/title_widget.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/category_web_view.dart';
-import 'package:flutter_restaurant/view/screens/home/widget/banner_view.dart';
+import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/main_slider.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeMenuScreen extends StatefulWidget {
   final bool fromAppBar;
-  HomeScreen(this.fromAppBar);
+  HomeMenuScreen(this.fromAppBar);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeMenuScreen> createState() => _HomeMenuScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeMenuScreenState extends State<HomeMenuScreen> {
   final GlobalKey<ScaffoldState> drawerGlobalKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
 
@@ -377,9 +377,6 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Center(
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 10.0,
-                  ),
                   SizedBox(
                     width: 1170,
                     child: Column(
@@ -393,11 +390,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )
                               : SizedBox(),
                           ResponsiveHelper.isDesktop(context)
-                              ? SizedBox()
-                              : BannerView(),
-                          ResponsiveHelper.isDesktop(context)
                               ? CategoryViewWeb()
-                              : SizedBox(),
+                              : CategoryView(),
                           ResponsiveHelper.isDesktop(context)
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -445,7 +439,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 )
-                              : SizedBox(),
+                              : Padding(
+                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                  child: TitleWidget(
+                                      title: getTranslated(
+                                          'latest_item', context)),
+                                ),
+                          ProductView(
+                              productType: ProductType.LATEST_PRODUCT,
+                              scrollController: _scrollController),
                         ]),
                   ),
                   if (ResponsiveHelper.isDesktop(context)) FooterView(),

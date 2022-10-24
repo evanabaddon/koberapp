@@ -110,8 +110,8 @@ class ProductWidgetWeb extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              // height: 220,
-              // width: 170,
+              height: 235,
+              // width: 250,
               decoration: BoxDecoration(
                   color: ColorResources.getCartColor(context),
                   borderRadius: BorderRadius.circular(10),
@@ -142,15 +142,15 @@ class ProductWidgetWeb extends StatelessWidget {
                           child: FadeInImage.assetNetwork(
                             placeholder: Images.placeholder_rectangle,
                             fit: BoxFit.cover,
-                            height: 105,
-                            width: 195,
+                            height: 120,
+                            width: 250,
                             image:
                                 '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${product.image}',
                             imageErrorBuilder: (c, o, s) => Image.asset(
                                 Images.placeholder_rectangle,
                                 fit: BoxFit.cover,
-                                height: 105,
-                                width: 195),
+                                height: 120,
+                                width: 250),
                           ),
                         ),
                         _isAvailable

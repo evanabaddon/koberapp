@@ -10,9 +10,9 @@ import 'package:flutter_restaurant/view/screens/cart/cart_screen.dart';
 import 'package:flutter_restaurant/view/screens/home/home_screen.dart';
 import 'package:flutter_restaurant/view/screens/menu/menu_screen.dart';
 import 'package:flutter_restaurant/view/screens/order/order_screen.dart';
-import 'package:flutter_restaurant/view/screens/wishlist/wishlist_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/link.dart';
+
+import '../home/home_menu_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final int pageIndex;
@@ -38,9 +38,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     _screens = [
       HomeScreen(false),
+      HomeMenuScreen(true),
       CartScreen(),
       OrderScreen(),
-      WishListScreen(),
+      // WishListScreen(),
       MenuScreen(onTap: (int pageIndex) {
         _setPage(pageIndex);
       }),
@@ -73,34 +74,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 type: BottomNavigationBarType.fixed,
                 items: [
                   _barItem(Icons.home, getTranslated('home', context), 0),
+                  _barItem(Icons.menu_book, getTranslated('menu', context), 1),
                   _barItem(
-                      Icons.shopping_cart, getTranslated('cart', context), 1),
+                      Icons.shopping_cart, getTranslated('cart', context), 2),
                   _barItem(
-                      Icons.shopping_bag, getTranslated('order', context), 2),
-                  _barItem(
-                      Icons.favorite, getTranslated('favourite', context), 3),
-                  _barItem(Icons.menu, getTranslated('menu', context), 4)
+                      Icons.shopping_bag, getTranslated('order', context), 3),
+                  // _barItem(
+                  // Icons.favorite, getTranslated('favourite', context), 3),
+                  _barItem(Icons.menu, getTranslated('other', context), 4)
                 ],
                 onTap: (int index) {
                   _setPage(index);
                 },
               )
             : SizedBox(),
-        floatingActionButton: Link(
-          uri: Uri.parse(
-              'https://api.whatsapp.com/send?phone=628113716668&text=Hallo%20kak%20Saya%20mau%20menghubungi%20CS%20Kober%20Mie%20Setan.%20Terimakasih'),
-          target: LinkTarget.blank,
-          builder: (BuildContext ctx, FollowLink openLink) {
-            return ElevatedButton.icon(
-              icon: const Icon(Icons.whatsapp),
-              label: const Text("CS KOBER"),
-              style: ElevatedButton.styleFrom(
-                primary: ColorResources.APPBAR_HEADER_COL0R,
-              ),
-              onPressed: openLink,
-            );
-          },
-        ),
         body: PageView.builder(
           controller: _pageController,
           itemCount: _screens.length,
@@ -123,7 +110,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ? Theme.of(context).primaryColor
                   : ColorResources.COLOR_GREY,
               size: 25),
-          index == 1
+          index == 2
               ? Positioned(
                   top: -7,
                   right: -7,

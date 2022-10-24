@@ -108,7 +108,7 @@ class ProductView extends StatelessWidget {
 
         return productType == ProductType.POPULAR_PRODUCT
             ? SizedBox(
-                height: 250,
+                height: 280,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   physics: BouncingScrollPhysics(),
@@ -116,7 +116,7 @@ class ProductView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Container(
                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                      width: 195,
+                      width: 205,
                       child: ProductWidgetWeb(
                           product: productList[index], fromPopularItem: true),
                     );

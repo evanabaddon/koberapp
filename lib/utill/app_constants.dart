@@ -2,7 +2,7 @@ import 'package:flutter_restaurant/data/model/response/language_model.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 
 class AppConstants {
-  static const String APP_NAME = 'Kober App';
+  static const String APP_NAME = 'Kober Mie';
   static const double APP_VERSION = 8.0;
   static const String BASE_URL = 'https://kober.digitaloka.id/admin';
   static const String CATEGORY_URI = '/api/v1/categories';

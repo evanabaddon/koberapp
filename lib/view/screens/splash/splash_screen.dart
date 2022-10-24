@@ -13,7 +13,6 @@ import 'package:flutter_restaurant/utill/app_constants.dart';
 import 'package:flutter_restaurant/utill/color_resources.dart';
 import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
-import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
@@ -132,7 +131,7 @@ class _SplashScreenState extends State<SplashScreen> {
                               .showOnBoardingStatus
                           ? Routes.getLanguageRoute('splash')
                           : Routes.getMainRoute()
-                      : Routes.getMainRoute(),
+                      : Routes.getWelcomeRoute(),
                   (route) => false);
             }
           }
