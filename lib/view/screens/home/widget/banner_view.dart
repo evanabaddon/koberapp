@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/data/model/response/cart_model.dart';
 import 'package:flutter_restaurant/data/model/response/category_model.dart';
@@ -25,154 +26,176 @@ class BannerView extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 250,
+          height: 300,
           child: Consumer<BannerProvider>(
             builder: (context, banner, child) {
               return banner.bannerList != null
                   ? banner.bannerList.length > 0
-                      ? ListView.builder(
+                      ? CarouselSlider.builder(
                           itemCount: banner.bannerList.length,
-                          padding: EdgeInsets.only(
-                              left: Dimensions.PADDING_SIZE_SMALL),
-                          physics: BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
+                          itemBuilder: ((context, index, realIndex) {
                             return Consumer<CartProvider>(
-                                builder: (context, _cartProvider, child) {
-                              return InkWell(
-                                  onTap: () {
-                                    if (banner.bannerList[index].productId !=
-                                        null) {
-                                      Product product;
-                                      for (Product prod in banner.productList) {
-                                        if (prod.id ==
-                                            banner
-                                                .bannerList[index].productId) {
-                                          product = prod;
-                                          break;
+                              builder: (context, _cartProvider, child) {
+                                return InkWell(
+                                    onTap: () {
+                                      if (banner.bannerList[index].productId !=
+                                          null) {
+                                        Product product;
+                                        for (Product prod
+                                            in banner.productList) {
+                                          if (prod.id ==
+                                              banner.bannerList[index]
+                                                  .productId) {
+                                            product = prod;
+                                            break;
+                                          }
+                                        }
+                                        int _cartIndex =
+                                            _cartProvider.getCartIndex(product);
+                                        ResponsiveHelper.isMobile(context)
+                                            ? showModalBottomSheet(
+                                                context: context,
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                builder: (con) =>
+                                                    CartBottomSheet(
+                                                  product: product,
+                                                  cart: _cartIndex != null
+                                                      ? _cartProvider
+                                                          .cartList[_cartIndex]
+                                                      : null,
+                                                  callback:
+                                                      (CartModel cartModel) {
+                                                    showCustomSnackBar(
+                                                        getTranslated(
+                                                            'added_to_cart',
+                                                            context),
+                                                        context,
+                                                        isError: false);
+                                                  },
+                                                ),
+                                              )
+                                            : showDialog(
+                                                context: context,
+                                                builder: (con) => Dialog(
+                                                      child: CartBottomSheet(
+                                                        product: product,
+                                                        cart: _cartIndex != null
+                                                            ? _cartProvider
+                                                                    .cartList[
+                                                                _cartIndex]
+                                                            : null,
+                                                        callback: (CartModel
+                                                            cartModel) {
+                                                          showCustomSnackBar(
+                                                              getTranslated(
+                                                                  'added_to_cart',
+                                                                  context),
+                                                              context,
+                                                              isError: false);
+                                                        },
+                                                      ),
+                                                    ));
+                                      } else if (banner
+                                              .bannerList[index].categoryId !=
+                                          null) {
+                                        CategoryModel category;
+                                        for (CategoryModel categoryModel
+                                            in Provider.of<CategoryProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .categoryList) {
+                                          if (categoryModel.id ==
+                                              banner.bannerList[index]
+                                                  .categoryId) {
+                                            category = categoryModel;
+                                            break;
+                                          }
+                                        }
+                                        if (category != null) {
+                                          Navigator.pushNamed(
+                                            context,
+                                            Routes.getCategoryRoute(
+                                                category.id),
+                                            arguments: CategoryScreen(
+                                                categoryModel: category),
+                                          );
                                         }
                                       }
-                                      int _cartIndex =
-                                          _cartProvider.getCartIndex(product);
-                                      ResponsiveHelper.isMobile(context)
-                                          ? showModalBottomSheet(
-                                              context: context,
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              builder: (con) => CartBottomSheet(
-                                                product: product,
-                                                cart: _cartIndex != null
-                                                    ? _cartProvider
-                                                        .cartList[_cartIndex]
-                                                    : null,
-                                                callback:
-                                                    (CartModel cartModel) {
-                                                  showCustomSnackBar(
-                                                      getTranslated(
-                                                          'added_to_cart',
-                                                          context),
-                                                      context,
-                                                      isError: false);
-                                                },
-                                              ),
-                                            )
-                                          : showDialog(
-                                              context: context,
-                                              builder: (con) => Dialog(
-                                                    child: CartBottomSheet(
-                                                      product: product,
-                                                      cart: _cartIndex != null
-                                                          ? _cartProvider
-                                                                  .cartList[
-                                                              _cartIndex]
-                                                          : null,
-                                                      callback: (CartModel
-                                                          cartModel) {
-                                                        showCustomSnackBar(
-                                                            getTranslated(
-                                                                'added_to_cart',
-                                                                context),
-                                                            context,
-                                                            isError: false);
-                                                      },
-                                                    ),
-                                                  ));
-                                    } else if (banner
-                                            .bannerList[index].categoryId !=
-                                        null) {
-                                      CategoryModel category;
-                                      for (CategoryModel categoryModel
-                                          in Provider.of<CategoryProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .categoryList) {
-                                        if (categoryModel.id ==
-                                            banner
-                                                .bannerList[index].categoryId) {
-                                          category = categoryModel;
-                                          break;
-                                        }
-                                      }
-                                      if (category != null) {
-                                        Navigator.pushNamed(
-                                          context,
-                                          Routes.getCategoryRoute(category.id),
-                                          arguments: CategoryScreen(
-                                              categoryModel: category),
-                                        );
-                                      }
-                                    }
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                        right: Dimensions.PADDING_SIZE_SMALL),
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey[
-                                              Provider.of<ThemeProvider>(
-                                                          context)
-                                                      .darkTheme
-                                                  ? 900
-                                                  : 300],
-                                          blurRadius:
-                                              Provider.of<ThemeProvider>(
-                                                          context)
-                                                      .darkTheme
-                                                  ? 2
-                                                  : 5,
-                                          spreadRadius:
-                                              Provider.of<ThemeProvider>(
-                                                          context)
-                                                      .darkTheme
-                                                  ? 0
-                                                  : 1,
-                                        )
-                                      ],
-                                      color: ColorResources.COLOR_WHITE,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: FadeInImage.assetNetwork(
-                                        placeholder: Images.placeholder_banner,
-                                        width: 250,
-                                        height: 85,
-                                        fit: BoxFit.cover,
-                                        image:
-                                            '${Provider.of<SplashProvider>(context, listen: false).baseUrls.bannerImageUrl}/${banner.bannerList[index].image}',
-                                        imageErrorBuilder: (c, o, s) =>
-                                            Image.asset(
-                                                Images.placeholder_banner,
-                                                width: 250,
-                                                height: 85,
-                                                fit: BoxFit.cover),
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                          right: Dimensions.PADDING_SIZE_SMALL),
+                                      decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey[
+                                                Provider.of<ThemeProvider>(
+                                                            context)
+                                                        .darkTheme
+                                                    ? 900
+                                                    : 300],
+                                            blurRadius:
+                                                Provider.of<ThemeProvider>(
+                                                            context)
+                                                        .darkTheme
+                                                    ? 2
+                                                    : 5,
+                                            spreadRadius:
+                                                Provider.of<ThemeProvider>(
+                                                            context)
+                                                        .darkTheme
+                                                    ? 0
+                                                    : 1,
+                                          )
+                                        ],
+                                        color: ColorResources.COLOR_WHITE,
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                    ),
-                                  ));
-                            });
-                          },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: FadeInImage.assetNetwork(
+                                          placeholder:
+                                              Images.placeholder_banner,
+                                          width: 300,
+                                          height: 300,
+                                          fit: BoxFit.cover,
+                                          image:
+                                              '${Provider.of<SplashProvider>(context, listen: false).baseUrls.bannerImageUrl}/${banner.bannerList[index].image}',
+                                          imageErrorBuilder: (c, o, s) =>
+                                              Image.asset(
+                                                  Images.placeholder_banner,
+                                                  width: MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          1.5 -
+                                                      100,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .width -
+                                                      100,
+                                                  fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                    ));
+                              },
+                            );
+                          }),
+                          options: CarouselOptions(
+                            height: MediaQuery.of(context).size.width,
+                            viewportFraction: 0.7,
+                            initialPage: 0,
+                            enableInfiniteScroll: true,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayInterval: Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            scrollDirection: Axis.horizontal,
+                          ),
                         )
                       : Center(
                           child: Text(
