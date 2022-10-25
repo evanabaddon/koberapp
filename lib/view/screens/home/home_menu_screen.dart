@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_restaurant/helper/product_type.dart';
 import 'package:flutter_restaurant/helper/responsive_helper.dart';
 import 'package:flutter_restaurant/localization/language_constrants.dart';
 import 'package:flutter_restaurant/provider/auth_provider.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_restaurant/utill/images.dart';
 import 'package:flutter_restaurant/utill/routes.dart';
 import 'package:flutter_restaurant/utill/styles.dart';
 import 'package:flutter_restaurant/view/base/footer_view.dart';
-import 'package:flutter_restaurant/view/base/title_widget.dart';
 import 'package:flutter_restaurant/view/base/web_app_bar.dart';
 import 'package:flutter_restaurant/view/screens/home/web/widget/category_web_view.dart';
 import 'package:flutter_restaurant/view/screens/home/widget/category_view.dart';
@@ -28,6 +26,9 @@ import 'package:flutter_restaurant/view/screens/home/widget/product_view.dart';
 import 'package:flutter_restaurant/view/screens/menu/widget/options_view.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
+
+import '../../../helper/product_type.dart';
+import '../../base/title_widget.dart';
 
 class HomeMenuScreen extends StatefulWidget {
   final bool fromAppBar;
@@ -391,63 +392,93 @@ class _HomeMenuScreenState extends State<HomeMenuScreen> {
                               : SizedBox(),
                           ResponsiveHelper.isDesktop(context)
                               ? CategoryViewWeb()
-                              : CategoryView(),
-                          ResponsiveHelper.isDesktop(context)
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                              // TO-DO KATEGORI GRID VIEW
+                              : Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                      child: Text(
-                                          getTranslated(
-                                              'popular_item', context),
-                                          style: rubikRegular.copyWith(
-                                              fontSize: Dimensions
-                                                  .FONT_SIZE_OVER_LARGE)),
-                                    ),
+                                    CategoryView(),
+                                    Expanded(
+                                        child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        ResponsiveHelper.isDesktop(context)
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            0, 20, 0, 20),
+                                                    child: Text(
+                                                        getTranslated(
+                                                            'popular_item',
+                                                            context),
+                                                        style: rubikRegular.copyWith(
+                                                            fontSize: Dimensions
+                                                                .FONT_SIZE_OVER_LARGE)),
+                                                  ),
+                                                ],
+                                              )
+                                            : Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    10, 20, 10, 10),
+                                                child: TitleWidget(
+                                                  title: getTranslated(
+                                                      'popular_item', context),
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                        context,
+                                                        Routes
+                                                            .getPopularItemScreen());
+                                                  },
+                                                ),
+                                              ),
+                                        ProductView(
+                                          productType:
+                                              ProductType.POPULAR_PRODUCT,
+                                        ),
+                                        ResponsiveHelper.isDesktop(context)
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            0, 20, 0, 20),
+                                                    child: Text(
+                                                        getTranslated(
+                                                            'latest_item',
+                                                            context),
+                                                        style: rubikRegular.copyWith(
+                                                            fontSize: Dimensions
+                                                                .FONT_SIZE_OVER_LARGE)),
+                                                  ),
+                                                ],
+                                              )
+                                            : Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    10, 0, 10, 10),
+                                                child: TitleWidget(
+                                                    title: getTranslated(
+                                                        'latest_item',
+                                                        context)),
+                                              ),
+                                        ProductView(
+                                            productType:
+                                                ProductType.LATEST_PRODUCT,
+                                            scrollController:
+                                                _scrollController),
+                                      ],
+                                    ))
                                   ],
-                                )
-                              : Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                  child: TitleWidget(
-                                    title:
-                                        getTranslated('popular_item', context),
-                                    onTap: () {
-                                      Navigator.pushNamed(context,
-                                          Routes.getPopularItemScreen());
-                                    },
-                                  ),
                                 ),
-                          ProductView(
-                            productType: ProductType.POPULAR_PRODUCT,
-                          ),
-                          ResponsiveHelper.isDesktop(context)
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(0, 20, 0, 20),
-                                      child: Text(
-                                          getTranslated('latest_item', context),
-                                          style: rubikRegular.copyWith(
-                                              fontSize: Dimensions
-                                                  .FONT_SIZE_OVER_LARGE)),
-                                    ),
-                                  ],
-                                )
-                              : Padding(
-                                  padding: EdgeInsets.fromLTRB(10, 0, 10, 10),
-                                  child: TitleWidget(
-                                      title: getTranslated(
-                                          'latest_item', context)),
-                                ),
-                          ProductView(
-                              productType: ProductType.LATEST_PRODUCT,
-                              scrollController: _scrollController),
                         ]),
                   ),
                   if (ResponsiveHelper.isDesktop(context)) FooterView(),

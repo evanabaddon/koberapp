@@ -19,110 +19,112 @@ class CategoryView extends StatelessWidget {
     return Consumer<CategoryProvider>(
       builder: (context, category, child) {
         return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 20, 0, 10),
+              padding: EdgeInsets.fromLTRB(0, 23, 0, 10),
               child:
                   TitleWidget(title: getTranslated('all_categories', context)),
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 110,
-                    child: category.categoryList != null
-                        ? category.categoryList.length > 0
-                            ? ListView.builder(
-                                itemCount: category.categoryList.length,
-                                padding: EdgeInsets.only(
-                                    left: Dimensions.PADDING_SIZE_SMALL),
-                                physics: BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  String _name = '';
-                                  category.categoryList[index].name.length > 15
-                                      ? _name = category
-                                              .categoryList[index].name
-                                              .substring(0, 20) +
-                                          ' ...'
-                                      : _name =
-                                          category.categoryList[index].name;
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        right: Dimensions.PADDING_SIZE_DEFAULT),
-                                    child: InkWell(
-                                      onTap: () => Navigator.pushNamed(
-                                        context,
-                                        Routes.getCategoryRoute(
-                                            category.categoryList[index].id),
-                                        arguments: CategoryScreen(
-                                            categoryModel:
-                                                category.categoryList[index]),
-                                      ), // arguments:  category.categoryList[index].name),
-                                      child: Column(children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                              Radius.circular(12.0),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: 95,
+                  child: category.categoryList != null
+                      ? category.categoryList.length > 0
+                          ? GridView.builder(
+                              itemCount: category.categoryList.length,
+                              padding: EdgeInsets.only(
+                                  left: Dimensions.PADDING_SIZE_SMALL),
+                              physics: BouncingScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                String _name = '';
+                                category.categoryList[index].name.length > 15
+                                    ? _name = category.categoryList[index].name
+                                            .substring(0, 20) +
+                                        ' ...'
+                                    : _name = category.categoryList[index].name;
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      right: Dimensions.PADDING_SIZE_DEFAULT),
+                                  child: InkWell(
+                                    onTap: () => Navigator.pushNamed(
+                                      context,
+                                      Routes.getCategoryRoute(
+                                          category.categoryList[index].id),
+                                      arguments: CategoryScreen(
+                                          categoryModel:
+                                              category.categoryList[index]),
+                                    ), // arguments:  category.categoryList[index].name),
+                                    child: Column(children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(12.0),
+                                          ),
+                                          color: Colors.white,
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Color(0x19000000),
+                                              blurRadius: 4,
+                                              offset: Offset(1, 1),
                                             ),
-                                            color: Colors.white,
-                                            boxShadow: const [
-                                              BoxShadow(
-                                                color: Color(0x19000000),
-                                                blurRadius: 4,
-                                                offset: Offset(1, 1),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: FadeInImage.assetNetwork(
-                                              placeholder:
-                                                  Images.placeholder_image,
-                                              width: 65,
-                                              height: 65,
-                                              fit: BoxFit.cover,
-                                              image: Provider.of<SplashProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .baseUrls !=
-                                                      null
-                                                  ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/${category.categoryList[index].image}'
-                                                  : '',
-                                              imageErrorBuilder: (c, o, s) =>
-                                                  Image.asset(
-                                                      Images.placeholder_image,
-                                                      width: 65,
-                                                      height: 65,
-                                                      fit: BoxFit.cover),
-                                              // width: 100, height: 100, fit: BoxFit.cover,
-                                            ),
+                                          ],
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: FadeInImage.assetNetwork(
+                                            placeholder:
+                                                Images.placeholder_image,
+                                            width: 35,
+                                            height: 35,
+                                            fit: BoxFit.cover,
+                                            image: Provider.of<SplashProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .baseUrls !=
+                                                    null
+                                                ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/${category.categoryList[index].image}'
+                                                : '',
+                                            imageErrorBuilder: (c, o, s) =>
+                                                Image.asset(
+                                                    Images.placeholder_image,
+                                                    width: 65,
+                                                    height: 65,
+                                                    fit: BoxFit.cover),
+                                            // width: 100, height: 100, fit: BoxFit.cover,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          height: 10.0,
+                                      ),
+                                      const SizedBox(
+                                        height: 10.0,
+                                      ),
+                                      Flexible(
+                                        child: Text(
+                                          _name,
+                                          style: rubikMedium.copyWith(
+                                              fontSize:
+                                                  Dimensions.FONT_SIZE_SMALL),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        Flexible(
-                                          child: Text(
-                                            _name,
-                                            style: rubikMedium.copyWith(
-                                                fontSize:
-                                                    Dimensions.FONT_SIZE_SMALL),
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ]),
-                                    ),
-                                  );
-                                },
-                              )
-                            : Center(
-                                child: Text(getTranslated(
-                                    'no_category_available', context)))
-                        : CategoryShimmer(),
-                  ),
+                                      ),
+                                    ]),
+                                  ),
+                                );
+                              },
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1),
+                            )
+                          : Center(
+                              child: Text(getTranslated(
+                                  'no_category_available', context)))
+                      : CategoryShimmer(),
                 ),
                 ResponsiveHelper.isMobile(context)
                     ? SizedBox()
@@ -158,7 +160,7 @@ class CategoryView extends StatelessWidget {
                               )
                             ],
                           )
-                        : CategoryAllShimmer()
+                        : CategoryAllShimmer(),
               ],
             ),
           ],
